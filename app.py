@@ -32,7 +32,7 @@ def create_user():
     first_name = request.form['first_name']
     last_name = request.form['last_name']
     image_url = request.form['image_url']
-    image_url = URL(image_url) if image_url else None
+    # image_url = URL(image_url) if image_url else None
 
     """CREATE INSTANCE OF USER"""
     user = User(
@@ -51,5 +51,32 @@ def create_user():
 def show_user_detail(user_id):
     """Show information about a single user"""
 
-    user = User.query.get_or_4040(user_id)
+    user = User.query.get_or_404(user_id)
     return render_template("user_detail.html", user=user)
+
+@app.get('/users/<int:user_id>/edit')
+def show_edit_form(user_id):
+    """Show form to edit user information"""
+
+    user = User.query.get_or_404(user_id)
+    return render_template("edit_user.html", user=user)
+
+@app.post('/users/<int:user_id>')
+def save_user_updates(user_id):
+    """Saves user updates and return to user list"""
+
+    # check for no updates and return orginal value
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    image_url = request.form['image_url']
+
+    user = User.query.get(user_id) 
+
+    user.first_name = first_name
+    user.last_name = last_name
+    user.image_url = image_url
+
+    db.session.commit()
+    
+    return redirect('/')
+
