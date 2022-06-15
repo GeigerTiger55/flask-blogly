@@ -13,12 +13,17 @@ db.create_all()
 
 
 @app.get('/')
+def homepage_redirect():
+    """Shows the list of existing users"""
+
+    return redirect('/users')
+
+@app.get('/users')
 def show_users():
     """Shows the list of existing users"""
 
     users = User.query.all()
     return render_template('user_listing.html', users=users)
-
 
 @app.get('/users/new')
 def add_user_form():
@@ -61,8 +66,8 @@ def show_edit_form(user_id):
     user = User.query.get_or_404(user_id)
     return render_template("edit_user.html", user=user)
 
-@app.post('/users/<int:user_id>')
-def save_user_updates(user_id):
+@app.post('/users/<int:user_id>/edit')
+def save_user_edits(user_id):
     """Saves user updates and return to user list"""
 
     # check for no updates and return orginal value
@@ -78,5 +83,17 @@ def save_user_updates(user_id):
 
     db.session.commit()
     
-    return redirect('/')
+    return redirect('/users')
+
+@app.post('/users/<int:user_id>/delete')
+def delete_user_info(user_id):
+    """Deletes user from database"""
+    breakpoint()
+    
+    user = User.query.get(user_id)
+    user.query.delete()
+
+    db.session.commit()
+
+    return redirect('/users')
 

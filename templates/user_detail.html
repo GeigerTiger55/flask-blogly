@@ -5,12 +5,20 @@
 <img href="{{ user.image_url }}" />
 <h1>{{ user.first_name }} {{ user.last_name }}</h1>
 
-
-<button type='submit' formaction='/users/{{ user.id }}/edit' formmethod="GET">
-    Edit
-</button>
-<button type='submit' formaction='/users/{{ user.id }}/delete' formmethod="POST">
-    Delete
-</button>
+<form action="/users/{{ user.id }}/edit">
+    <button>
+        Edit
+    </button>
+</form>
+<form action="/users/{{ user.id }}/delete" method="POST">
+    <button>
+        Delete
+    </button>
+</form>
+<form action="/users">
+    <button>
+        Home
+    </button>
+</form>
 
 {% endblock %}
