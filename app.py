@@ -88,11 +88,10 @@ def save_user_edits(user_id):
 @app.post('/users/<int:user_id>/delete')
 def delete_user_info(user_id):
     """Deletes user from database"""
-    breakpoint()
     
-    user = User.query.get(user_id)
-    user.query.delete()
-
+    user = User.query.get_or_404(user_id)
+    
+    db.session.delete(user)
     db.session.commit()
 
     return redirect('/users')
