@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<h1>Edit A User</h1>
+
+<form method="POST" action="/users/new" class="pb-r">
+    <div class="mb-3 row">
+        <label class="col-f col-form-label text-end">First Name</label>
+        <div class="col-7">
+            <input name="first_name" required class="form-control" value="{{ user.first_name }}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-f col-form-label text-end">Last Name</label>
+        <div class="col-7">
+            <input name="last_name" required class="form-control" value="{{ user.last_name }}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-f col-form-label text-end">Image URL</label>
+        <div class="col-7">
+            <input name="image_url" required class="form-control" value="{{ user.image_url }}">
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-lg w-100 Save">
+        Save
+    </button>
+    <button class="btn btn-primary btn-lg w-100 Cancel">
+        Cancel
+    </button>
+</form>
+{% endblock %}
