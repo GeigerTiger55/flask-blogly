@@ -1,0 +1,16 @@
+{% extends base.html %}
+
+{% block content%}
+
+<img href="{{ user.image_url }}" />
+<h1>{{ user.first_name }} {{ user.last_name }}</h1>
+
+
+<button type='submit' formaction='/user/{{ user.id }}/edit' formmethod="GET">
+    Edit
+</button>
+<button type='submit' formaction='/user/{{ user.id }}/delete' formmethod="POST">
+    Delete
+</button>
+
+{% endblock %}
