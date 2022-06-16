@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+DEFAULT_IMAGE_URL = 'https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg'
 
 def connect_db(app):
     """Connect to database."""
@@ -28,4 +29,5 @@ class User(db.Model):
         db.String(50),
         nullable=False)
     image_url = db.Column(  
-        db.String(2000))
+        db.String(2000),
+        default=DEFAULT_IMAGE_URL)

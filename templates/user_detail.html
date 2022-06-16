@@ -2,7 +2,9 @@
 
 {% block content%}
 
-<img href="{{ user.image_url }}" />
+<!-- Marker tag for user_detail page -->
+
+<img src="{{ user.image_url }}" width="100px" height="150px"/>
 <h1>{{ user.first_name }} {{ user.last_name }}</h1>
 
 <form action="/users/{{ user.id }}/edit">
