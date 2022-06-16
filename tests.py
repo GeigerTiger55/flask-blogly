@@ -168,29 +168,29 @@ class UserViewTestCase(TestCase):
         self.assertIn('<!-- Marker tag for user_listing page -->', html)
 
     #Update to POST!
-    def test_user_detail_page(self):
+    def test_post_detail_page(self):
         """Make sure user detail page displays correctly"""
 
         with self.client as client:
-            response = client.get(f'/users/{self.user_id}')
+            response = client.get(f'/posts/{self.post_id}')
 
         html = response.get_data(as_text=True)
         user = User.query.get_or_404(self.user_id)
         post = Post.query.get_or_404(self.post_id)
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn('<!-- Marker tag for user_detail page -->', html)
+        self.assertIn('<!-- Marker tag for post_detail page -->', html)
         self.assertIn(user.first_name, html)
         self.assertIn(post.title,html)
 
     #Update to Post!!
-    def test_user_detail_page_failure(self):
+    def test_post_detail_page_failure(self):
         """Make sure user detail page fails when requesting user_id that is
             incorrect
         """
 
         with self.client as client:
-            response = client.get(f'/users/xxx')
+            response = client.get(f'/posts/xxx')
 
         self.assertEqual(response.status_code, 404)
 
