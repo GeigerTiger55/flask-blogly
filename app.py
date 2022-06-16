@@ -57,7 +57,9 @@ def create_user():
 
 @app.get('/users/<int:user_id>')
 def show_user_detail(user_id):
-    """Show information about a single user"""
+    """Show information about a single user
+        TODO: add handling for 404
+    """
 
     user = User.query.get_or_404(user_id)
     return render_template("user_detail.html", user=user)

@@ -76,6 +76,17 @@ class UserViewTestCase(TestCase):
         self.assertIn(user.first_name, html)
 
 
+    def test_user_detail_page_failure(self):
+        """Make sure user detail page fails when requesting user_id that is
+            incorrect
+        """
+
+        with self.client as client:
+            response = client.get(f'/users/xxx')
+
+        self.assertEqual(response.status_code, 404)
+
+
     def test_edit_user(self):
         """Test creating a new user"""
         
