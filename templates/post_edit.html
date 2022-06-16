@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<!-- Marker tag for post_edit page -->
+
+<h1>Edit Post</h1>
+
+<form action="/posts/{{ post.id }}/edit" method="POST">
+    <label class="col-f col-form-label text-end">Title</label>
+    <input name="title" required class="form-control" value="{{ post.title }}">
+    <label class="col-f col-form-label text-end">Content</label>
+    <textarea name="content" required class="form-control">{{ post.content }}
+    </textarea> 
+    <button class="btn btn-primary btn-lg w-100">
+        Save Edits
+    </button>
+    <button formaction="/users/{{ post.user_id }}" formmethod="GET" 
+        class="btn btn-primary btn-lg w-100">
+        Cancel
+    </button>
+</form>
+
+{% endblock %}

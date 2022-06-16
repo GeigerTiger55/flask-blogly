@@ -69,7 +69,7 @@ def show_user_detail(user_id):
 
 
 @app.get('/users/<int:user_id>/edit')
-def show_edit_form(user_id):
+def show_user_edit_form(user_id):
     """Show form to edit user information"""
 
     user = User.query.get_or_404(user_id)
@@ -135,3 +135,55 @@ def create_post(user_id):
 
     return redirect(f"/users/{user_id}")
 
+
+@app.get('/posts/<int:post_id>')
+def show_post_detail(post_id):
+    """Show post.
+        TODO: add handling for 404
+    """
+
+    post = Post.query.get_or_404(post_id)
+    user = post.user
+
+    return render_template("post_detail.html", user=user, post=post)
+
+
+@app.get('/posts/<int:post_id>/edit')
+def show_post_edit_form(post_id):
+    """Show form to edit post information"""
+
+    post = Post.query.get_or_404(post_id)
+    return render_template("post_edit.html", post=post)
+
+
+@app.post("/posts/<int:post_id>/edit")
+def save_post_edits(post_id):
+    """Saves post updates and redirect to user page"""
+
+    # check for no updates and return orginal value
+    title = request.form['title']
+    content = request.form['content']
+
+    post = Post.query.get(post_id) 
+
+    post.title = title
+    post.content = content
+
+    user_id = post.user_id
+
+    db.session.commit()
+    
+    return redirect(f'/users/{ user_id }')
+
+
+@app.post('/posts/<int:post_id>/delete')
+def delete_post_info(post_id):
+    """Deletes user from database"""
+    
+    post = Post.query.get_or_404(post_id)
+    user_id = post.user_id
+    
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users/{ user_id }')

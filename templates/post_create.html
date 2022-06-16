@@ -2,6 +2,8 @@
 
 {% block content%}
 
+<!-- Marker tag for post_create page -->
+
 <h1>ADD Post for {{ user.first_name}} {{ user.last_name }}</h1>
 
 <form action="/users/{{user.id}}/posts/new" method="POST">
