@@ -116,6 +116,17 @@ class UserViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('<!-- Marker tag for user_listing page -->', html)
 
+    def test_user_edit_page(self):
+
+        with self.client as client:
+            response = client.get(f'/users/{self.user_id}/edit')
+
+        html = response.get_data(as_text=True)
+        user = User.query.get_or_404(self.user_id)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<!-- Marker tag for user_editing page -->', html)
+        self.assertIn(user.first_name, html)
 
 
 
