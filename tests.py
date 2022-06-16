@@ -47,8 +47,21 @@ class UserViewTestCase(TestCase):
         # value of their id, since it will change each time our tests are run.
         self.user_id = test_user.id
 
+    def tearDown(self):
+            """Clean up any fouled transaction."""
+            db.session.rollback()
 
-    def test_users_page(self):
+
+    def test_list_users(self):
+        with self.client as c:
+            resp = c.get("/users")
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("test_first", html)
+            self.assertIn("test_last", html)
+
+
+    def test_user_listing_page(self):
         """Make sure all users display on users page"""
         
         with self.client as client:
@@ -87,8 +100,22 @@ class UserViewTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
-    def test_edit_user(self):
-        """Test creating a new user"""
+    def test_user_edit_page(self):
+            """Test that edit form populates"""
+
+            with self.client as client:
+                response = client.get(f'/users/{self.user_id}/edit')
+
+            html = response.get_data(as_text=True)
+            user = User.query.get_or_404(self.user_id)
+
+            self.assertEqual(response.status_code, 200)
+            self.assertIn('<!-- Marker tag for user_editing page -->', html)
+            self.assertIn(user.first_name, html)
+
+
+    def test_user_edit_feature(self):
+        """Test editing a user"""
         
         user = User.query.get_or_404(self.user_id)
 
@@ -108,7 +135,7 @@ class UserViewTestCase(TestCase):
         self.assertEqual('test_last', updated_user.last_name)
 
 
-    def test_edit_user_redirect(self):
+    def test_user_edit_redirect(self):
         """Test that submitting edit to user redirects to /users"""
 
         user = User.query.get_or_404(self.user_id)
@@ -128,31 +155,3 @@ class UserViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('<!-- Marker tag for user_listing page -->', html)
-
-
-    def test_user_edit_page(self):
-        """Test that edit form populates"""
-
-        with self.client as client:
-            response = client.get(f'/users/{self.user_id}/edit')
-
-        html = response.get_data(as_text=True)
-        user = User.query.get_or_404(self.user_id)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertIn('<!-- Marker tag for user_editing page -->', html)
-        self.assertIn(user.first_name, html)
-
-
-    def tearDown(self):
-        """Clean up any fouled transaction."""
-        db.session.rollback()
-
-
-    def test_list_users(self):
-        with self.client as c:
-            resp = c.get("/users")
-            self.assertEqual(resp.status_code, 200)
-            html = resp.get_data(as_text=True)
-            self.assertIn("test_first", html)
-            self.assertIn("test_last", html)

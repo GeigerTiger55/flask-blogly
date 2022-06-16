@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, request, redirect, render_template
-from models import db, connect_db, User, DEFAULT_IMAGE_URL
+from models import db, connect_db, User, Post, DEFAULT_IMAGE_URL
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -29,7 +29,7 @@ def show_users():
 
 
 @app.get('/users/new')
-def add_user_form():
+def show_add_user_form():
     """Loads form to enter new user data"""
     return render_template('user_create.html')
 
@@ -63,7 +63,9 @@ def show_user_detail(user_id):
     """
 
     user = User.query.get_or_404(user_id)
-    return render_template("user_detail.html", user=user)
+    posts = user.posts
+
+    return render_template("user_detail.html", user=user, posts=posts)
 
 
 @app.get('/users/<int:user_id>/edit')
@@ -104,4 +106,32 @@ def delete_user_info(user_id):
     db.session.commit()
 
     return redirect('/users')
+
+
+@app.get('/users/<int:user_id>/posts/new')
+def show_add_post_form(user_id):
+    """Render the add post form"""
+
+    user = User.query.get(user_id)
+
+    return render_template('post_create.html', user=user)
+
+
+@app.post('/users/<int:user_id>/posts/new')
+def create_post(user_id):
+    """Render the add post form"""
+    
+    title = request.form['title']
+    content = request.form['content']
+
+    post = Post(
+        title=title,
+        content=content,
+        user_id=user_id
+    )
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f"/users/{user_id}")
 

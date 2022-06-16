@@ -30,6 +30,10 @@
 {% else %}
     <p>You've made no posts!</p>
 {% endif %}
-
+<form>
+    <button formaction="/users/{{ user.id }}/posts/new" formmethod="GET">
+        Add Post
+    </button>
+</form>
 
 {% endblock %}
