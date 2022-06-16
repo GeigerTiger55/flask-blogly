@@ -47,6 +47,7 @@ class UserViewTestCase(TestCase):
         # value of their id, since it will change each time our tests are run.
         self.user_id = test_user.id
 
+
     def test_users_page(self):
         """Make sure all users display on users page"""
         
@@ -73,6 +74,7 @@ class UserViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('<!-- Marker tag for user_detail page -->', html)
         self.assertIn(user.first_name, html)
+
 
     def test_edit_user(self):
         """Test creating a new user"""
@@ -116,7 +118,9 @@ class UserViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('<!-- Marker tag for user_listing page -->', html)
 
+
     def test_user_edit_page(self):
+        """Test that edit form populates"""
 
         with self.client as client:
             response = client.get(f'/users/{self.user_id}/edit')
@@ -129,12 +133,10 @@ class UserViewTestCase(TestCase):
         self.assertIn(user.first_name, html)
 
 
-
-
-
     def tearDown(self):
         """Clean up any fouled transaction."""
         db.session.rollback()
+
 
     def test_list_users(self):
         with self.client as c:
