@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, request, redirect, render_template
-from models import db, connect_db, User
+from models import db, connect_db, User, DEFAULT_IMAGE_URL
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -14,9 +14,10 @@ db.create_all()
 
 @app.get('/')
 def homepage_redirect():
-    """Shows the list of existing users need to update"""
+    """redirects to user page"""
 
     return redirect('/users')
+
 
 @app.get('/users')
 def show_users():
@@ -25,10 +26,12 @@ def show_users():
     users = User.query.all()
     return render_template('user_listing.html', users=users)
 
+
 @app.get('/users/new')
 def add_user_form():
     """Loads form to enter new user data"""
     return render_template('user_create.html')
+
 
 @app.post('/users/new')
 def create_user():
@@ -37,7 +40,7 @@ def create_user():
     first_name = request.form['first_name']
     last_name = request.form['last_name']
     image_url = request.form['image_url']
-    # image_url = URL(image_url) if image_url else None
+    image_url = image_url if image_url else None
 
     """CREATE INSTANCE OF USER"""
     user = User(
@@ -59,6 +62,7 @@ def show_user_detail(user_id):
     user = User.query.get_or_404(user_id)
     return render_template("user_detail.html", user=user)
 
+
 @app.get('/users/<int:user_id>/edit')
 def show_edit_form(user_id):
     """Show form to edit user information"""
@@ -66,14 +70,16 @@ def show_edit_form(user_id):
     user = User.query.get_or_404(user_id)
     return render_template("user_edit.html", user=user)
 
+
 @app.post('/users/<int:user_id>/edit')
 def save_user_edits(user_id):
-    """Saves user updates and return to user list"""
+    """Saves user updates and redirect to user list"""
 
     # check for no updates and return orginal value
     first_name = request.form['first_name']
     last_name = request.form['last_name']
     image_url = request.form['image_url']
+    image_url = image_url if image_url else DEFAULT_IMAGE_URL
 
     user = User.query.get(user_id) 
 

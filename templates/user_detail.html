@@ -4,21 +4,18 @@
 
 <!-- Marker tag for user_detail page -->
 
-<img src="{{ user.image_url }}" width="100px" height="150px"/>
+<img src="{{ user.image_url }}" width="100px" height="150px" />
 <h1>{{ user.first_name }} {{ user.last_name }}</h1>
 
-<form action="/users/{{ user.id }}/edit">
-    <button>
+
+<form>
+    <button formaction="/users/{{ user.id }}/edit" formmethod="GET">
         Edit
     </button>
-</form>
-<form action="/users/{{ user.id }}/delete" method="POST">
-    <button>
+    <button formaction="/users/{{ user.id }}/delete" formmethod="POST">
         Delete
     </button>
-</form>
-<form action="/users">
-    <button>
+    <button formaction="/users" formmethod="GET">
         Home
     </button>
 </form>
