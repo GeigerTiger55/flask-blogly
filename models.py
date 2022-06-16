@@ -29,5 +29,6 @@ class User(db.Model):
         db.String(50),
         nullable=False)
     image_url = db.Column(  
-        db.String(2000),
+        db.Text,
+        nullable=False,
         default=DEFAULT_IMAGE_URL)

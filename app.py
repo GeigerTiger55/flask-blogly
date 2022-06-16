@@ -14,7 +14,7 @@ db.create_all()
 
 @app.get('/')
 def homepage_redirect():
-    """Shows the list of existing users"""
+    """Shows the list of existing users need to update"""
 
     return redirect('/users')
 
@@ -28,7 +28,7 @@ def show_users():
 @app.get('/users/new')
 def add_user_form():
     """Loads form to enter new user data"""
-    return render_template('create_user.html')
+    return render_template('user_create.html')
 
 @app.post('/users/new')
 def create_user():
@@ -64,7 +64,7 @@ def show_edit_form(user_id):
     """Show form to edit user information"""
 
     user = User.query.get_or_404(user_id)
-    return render_template("edit_user.html", user=user)
+    return render_template("user_edit.html", user=user)
 
 @app.post('/users/<int:user_id>/edit')
 def save_user_edits(user_id):
