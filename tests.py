@@ -190,7 +190,7 @@ class UserViewTestCase(TestCase):
         """
 
         with self.client as client:
-            response = client.get(f'/posts/xxx')
+            response = client.get(f'/posts/99999')
 
         self.assertEqual(response.status_code, 404)
 

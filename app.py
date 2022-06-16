@@ -86,7 +86,7 @@ def save_user_edits(user_id):
     image_url = request.form['image_url']
     image_url = image_url if image_url else DEFAULT_IMAGE_URL
 
-    user = User.query.get(user_id) 
+    user = User.query.get_or_404(user_id) 
 
     user.first_name = first_name
     user.last_name = last_name
@@ -107,12 +107,13 @@ def delete_user_info(user_id):
 
     return redirect('/users')
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Post Routes~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 @app.get('/users/<int:user_id>/posts/new')
 def show_add_post_form(user_id):
     """Render the add post form"""
 
-    user = User.query.get(user_id)
+    user = User.query.get_or_404(user_id)
 
     return render_template('post_create.html', user=user)
 
@@ -123,6 +124,7 @@ def create_post(user_id):
     
     title = request.form['title']
     content = request.form['content']
+    user = User.query.get_or_404(user_id)
 
     post = Post(
         title=title,
@@ -164,7 +166,7 @@ def save_post_edits(post_id):
     title = request.form['title']
     content = request.form['content']
 
-    post = Post.query.get(post_id) 
+    post = Post.query.get_or_404(post_id) 
 
     post.title = title
     post.content = content
@@ -178,7 +180,7 @@ def save_post_edits(post_id):
 
 @app.post('/posts/<int:post_id>/delete')
 def delete_post_info(post_id):
-    """Deletes user from database"""
+    """Deletes post from database and redirects to user detail page"""
     
     post = Post.query.get_or_404(post_id)
     user_id = post.user_id
