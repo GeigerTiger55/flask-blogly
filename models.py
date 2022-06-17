@@ -55,8 +55,9 @@ class Post(db.Model):
         default=db.func.now())
     user_id = db.Column(
         db.Integer,
+        nullable=False,
         db.ForeignKey('users.id'))
-        # add nullable
+        
 
     user = db.relationship('User', backref='posts')
 
@@ -83,10 +84,12 @@ class PostTag(db.Model):
     post_id = db.Column(
         db.Integer,
         db.ForeignKey("posts.id"),
-        primary_key=True)
+        primary_key=True,
+        nullable=False)
     tag_id = db.Column(
         db.Integer,
         db.ForeignKey("tags.id"),
-        primary_key=True)
+        primary_key=True,
+        nullable=False)
 
     
