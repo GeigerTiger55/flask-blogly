@@ -61,6 +61,7 @@ class Post(db.Model):
 
     user = db.relationship('User', backref='posts')
 
+    tags = db.relationship('Tag', secondary='post_tags', backref='posts')
 
 class Tag(db.Model):
     """Tag."""
@@ -75,11 +76,13 @@ class Tag(db.Model):
         db.String(20),
         nullable=False,
         unique=True)
+        
+        
     
 class PostTag(db.Model):
     """Connecting Tags and Posts tables"""
 
-    __tablename__= "posttags"
+    __tablename__= "post_tags"
 
     post_id = db.Column(
         db.Integer,
@@ -92,4 +95,5 @@ class PostTag(db.Model):
         primary_key=True,
         nullable=False)
 
+    
     
