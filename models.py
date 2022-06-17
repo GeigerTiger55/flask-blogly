@@ -55,18 +55,17 @@ class Post(db.Model):
         default=db.func.now())
     user_id = db.Column(
         db.Integer,
-        nullable=False,
-        db.ForeignKey('users.id'))
+        db.ForeignKey('users.id'),
+        nullable=False)
         
-
     user = db.relationship('User', backref='posts')
 
-    tags = db.relationship('Tag', secondary='post_tags', backref='posts')
+    tagss = db.relationship('Tag', secondary='post_tags', backref='posts')
 
 class Tag(db.Model):
     """Tag."""
 
-    ___tablename___ = "tags"
+    __tablename__ = "tags"
 
     id = db.Column(
         db.Integer,
@@ -77,7 +76,7 @@ class Tag(db.Model):
         nullable=False,
         unique=True)
         
-        
+
     
 class PostTag(db.Model):
     """Connecting Tags and Posts tables"""
@@ -94,6 +93,3 @@ class PostTag(db.Model):
         db.ForeignKey("tags.id"),
         primary_key=True,
         nullable=False)
-
-    
-    
