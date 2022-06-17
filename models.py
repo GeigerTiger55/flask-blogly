@@ -60,7 +60,7 @@ class Post(db.Model):
         
     user = db.relationship('User', backref='posts')
 
-    tagss = db.relationship('Tag', secondary='post_tags', backref='posts')
+    tags = db.relationship('Tag', secondary='post_tags', backref='posts')
 
 class Tag(db.Model):
     """Tag."""
